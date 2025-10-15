@@ -170,7 +170,7 @@ jobs:
          ls
          $STRIP nodogsplash ndsctl
          file nodogsplash 
-         mkdir -p /opt/out/htdocs
+         mkdir -p /opt/out/htdocs/images
          mv -f ./nodogsplash /opt/out/nodogsplash 
          mv -f ./ndsctl /opt/out/ndsctl
          cp ./resources/nodogsplash.conf /opt/out/
