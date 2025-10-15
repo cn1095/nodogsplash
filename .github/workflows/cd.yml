@@ -186,13 +186,14 @@ jobs:
          cp resources/splash.css /opt/out/htdocs/
          cp resources/status.html /opt/out/htdocs/
          cp resources/splash.jpg /opt/out/htdocs/images/
-         cd /opt/out
-         zip -r ../nodogsplash-$TARGET.zip ./*
-         echo "build_time=$(date '+%Y年%m月%d日%H:%M:%S' | jq -sRr @uri)" >> $GITHUB_ENV
          if [ -z "$TAG" ]; then
               echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
          fi
          echo "haxi=$(git rev-parse HEAD)" >> $GITHUB_ENV
+         cd /opt/out
+         zip -r ../nodogsplash-$TARGET.zip ./*
+         echo "build_time=$(date '+%Y年%m月%d日%H:%M:%S' | jq -sRr @uri)" >> $GITHUB_ENV
+         
        #continue-on-error: true  
        
      - name: 安装 UPX
