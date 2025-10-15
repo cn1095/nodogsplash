@@ -128,9 +128,10 @@ jobs:
             ./configure \
               --host=mipsel-linux-musl \
               --disable-shared \
+              --disable-curl \
+              --disable-spdy \
               --enable-static \
               --without-gnutls \
-              --without-libgcrypt \
               --without-openssl \
               --prefix=/opt/microhttpd-${URL}
             make -j$(nproc)
@@ -175,13 +176,13 @@ jobs:
          # 禁用不支持musl的 TFO 或自动检测
          # sed -i 's/MHD_USE_EPOLL_INTERNALLY | MHD_USE_TCP_FASTOPEN,/MHD_USE_EPOLL_INTERNALLY,/g' src/main.c
          # 或者换个方式
-         sed -i 's/MHD_USE_EPOLL_INTERNALLY | MHD_USE_TCP_FASTOPEN,/MHD_USE_SELECT_INTERNALLY,/g' src/main.c
-         cat src/main.c
+         # sed -i 's/MHD_USE_EPOLL_INTERNALLY | MHD_USE_TCP_FASTOPEN,/MHD_USE_SELECT_INTERNALLY,/g' src/main.c
+         # cat src/main.c
          export CROSS_COMPILE=${URL}-
          make nodogsplash
          make ndsctl
          ls
-         $STRIP nodogsplash ndsctl
+         #$STRIP nodogsplash ndsctl
          file nodogsplash 
          mkdir -p /opt/out/htdocs/images
          mv -f ./nodogsplash /opt/out/nodogsplash 
