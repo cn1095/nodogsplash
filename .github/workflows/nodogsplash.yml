@@ -228,6 +228,7 @@ jobs:
            [官方源码](https://github.com/nodogsplash/nodogsplash)
            
           tag_name: ${{env.tag}}
+          overwrite_files: true
           files: /opt/nodogsplash-${{ matrix.target }}.zip
 
   del:
