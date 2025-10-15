@@ -91,23 +91,23 @@ jobs:
 
      - name: 设置环境变量
        run: |
-         CFLAGS="-ffunction-sections -fdata-sections -O2 -w $CFLAGS -I/opt/microhttpd-${URL}/include"
+         CFLAGS="-ffunction-sections -fdata-sections -O2 -w $CFLAGS -I/opt/microhttpd-${URL}/include -I/opt/json-c-${URL}/include"
            
-         LDFLAGS="-s -Wl,--gc-sections $LDFLAGS -L/opt/microhttpd-${URL}/lib"
+         LDFLAGS="-s -Wl,--gc-sections $LDFLAGS -L/opt/microhttpd-${URL}/lib -L/opt/json-c-${URL}/lib"
            
          echo "CFLAGS=$CFLAGS" >> $GITHUB_ENV
          echo "CXXFLAGS=$CFLAGS" >> $GITHUB_ENV
          echo "CPPFLAGS=$CFLAGS" >> $GITHUB_ENV
          echo "LDFLAGS=$LDFLAGS" >> $GITHUB_ENV
 
-     - name: 缓存 microhttpd
+     - name: 缓存 microhttpd 库
        id: cache-microhttpd
        uses: actions/cache@v4
        with:
         path: |
           /opt/microhttpd-${{ matrix.URL }}
         key: microhttpd-${{ matrix.URL }}-cache
-     - name: 编译 microhttpd
+     - name: 编译 microhttpd 库
        env:
          TARGET: ${{ matrix.target }}
          URL: ${{ matrix.URL }}
@@ -127,8 +127,38 @@ jobs:
               --prefix=/opt/microhttpd-${URL}
             make -j$(nproc)
             make install
+         else
+          echo "✅ microhttpd 静态库已缓存，跳过编译"
          fi
-        
+     - name: 缓存 json-c 库
+       id: cache-jsonc
+       uses: actions/cache@v4
+       with:
+        path: /opt/json-c-${{ matrix.URL }}
+        key: jsonc-${{ matrix.URL }}-cache
+
+     - name: 编译 json-c 库
+       env:
+        TARGET: ${{ matrix.target }}
+        URL: ${{ matrix.URL }}
+       run: |
+        if [ ! -d "/opt/json-c-${URL}" ] || [ -z "$(find /opt/json-c-${URL}/lib -name '*.a' 2>/dev/null)" ]; then
+          echo "########################### 编译 json-c 静态库 ########################"
+          git clone https://github.com/json-c/json-c.git
+          cd json-c
+          git checkout json-c-0.17-20230812
+          mkdir build && cd build
+          cmake .. \
+            -DCMAKE_SYSTEM_NAME=Linux \
+            -DCMAKE_C_COMPILER=${URL}-gcc \
+            -DCMAKE_INSTALL_PREFIX=/opt/json-c-${URL} \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DCMAKE_BUILD_TYPE=Release
+          make -j$(nproc)
+          make install
+        else
+          echo "✅ json-c 静态库已缓存，跳过编译"
+        fi
      - name: 编译 nodogsplash
        env:
         TAG: ${{ env.tag }}
