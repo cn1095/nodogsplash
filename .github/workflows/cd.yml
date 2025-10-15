@@ -3,6 +3,10 @@ name: 编译nodogsplash
 on:
   workflow_dispatch:
     inputs:
+      branch:
+        description: '编译nodogsplash/nodogsplash源码的分支或版本号，默认主分支main'
+        required: true
+        default: 'main'
       del:
         description: '是否删除历史编译的流程记录'
         required: true
@@ -30,6 +34,7 @@ concurrency:
 env:
   tag: "${{ github.event.inputs.tag }}"
   rel: "${{ github.event.inputs.rel }}"
+  branch: "${{ github.event.inputs.branch }}"
   TZ: Asia/Shanghai
   
 permissions:
@@ -81,7 +86,10 @@ jobs:
     steps:
      - name: Checkout code
        uses: actions/checkout@v4
-       
+       with:
+        repository: nodogsplash/nodogsplash
+        ref: ${{ env.branch }}
+        
      - name: 下载linux-musl-gcc
        uses: lmq8267/dl-musl@main
        with:
