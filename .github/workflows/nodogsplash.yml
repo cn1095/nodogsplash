@@ -182,7 +182,7 @@ jobs:
          make nodogsplash
          make ndsctl
          ls
-         #$STRIP nodogsplash ndsctl
+         $STRIP nodogsplash ndsctl
          file nodogsplash 
          mkdir -p /opt/out/htdocs/images
          mv -f ./nodogsplash /opt/out/nodogsplash 
