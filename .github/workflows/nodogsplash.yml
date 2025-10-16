@@ -173,11 +173,6 @@ jobs:
         TAG: ${{ env.tag }}
         TARGET: ${{ matrix.target }}
        run: |
-         # 禁用不支持musl的 TFO 或自动检测
-         # sed -i 's/MHD_USE_EPOLL_INTERNALLY | MHD_USE_TCP_FASTOPEN,/MHD_USE_EPOLL_INTERNALLY,/g' src/main.c
-         # 或者换个方式
-         # sed -i 's/MHD_USE_EPOLL_INTERNALLY | MHD_USE_TCP_FASTOPEN,/MHD_USE_SELECT_INTERNALLY,/g' src/main.c
-         # cat src/main.c
          export CROSS_COMPILE=${URL}-
          make nodogsplash
          make ndsctl
@@ -189,7 +184,7 @@ jobs:
          mv -f ./ndsctl /opt/out/ndsctl
          cp ./resources/nodogsplash.conf /opt/out/
          cp ./resources/splash.html /opt/out/htdocs/
-         cp resources/splash.css /opt/out/htdocs/
+         cp resources/myauth.sh /opt/out/
          cp resources/status.html /opt/out/htdocs/
          cp resources/splash.jpg /opt/out/htdocs/images/
          if [ -z "$TAG" ]; then
