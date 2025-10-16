@@ -1,43 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-
+<meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>$gatewayname 热点网关状态</title>
 <link rel="shortcut icon" href="/images/splash.jpg" type="image/x-icon">
-<link rel="stylesheet" type="text/css" href="/splash.css">
 
-<title>$gatewayname Hotspot Gateway Status</title>
+<style>
+/* 全局样式 */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: "Microsoft YaHei", "SimHei", "Arial", sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-<!--
-Status:
-	The Status page is served to a client if they are already authenticated.
-	This may occur if the client user selects "Back" on the CPD browser
-	screen after they have successfully authenticated.
+/* 页面容器 */
+.container {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    animation: fadeIn 1.2s ease-in-out;
+}
 
-	The same template variables are available as for the splash page.
--->
+/* 渐入动画 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
+/* 标题样式 */
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #ffeb3b;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    animation: pulse 2s infinite;
+}
+
+/* 标题脉冲动画 */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* 图片样式 */
+img {
+    max-width: 100%;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    animation: slideUp 1.2s ease-in-out;
+}
+
+/* 图片滑入动画 */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 状态提示文字 */
+.status-text {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+/* 版权信息 */
+.copy-right {
+    margin-top: 30px;
+    font-size: 0.8rem;
+    color: #ccc;
+}
+</style>
 </head>
 
 <body>
-<div class="offset">
-<med-blue>$gatewayname Hotspot Gateway.</med-blue>
-<div class="insert">
-<br>
-<img src="/images/splash.jpg" alt="You are already logged in and have access to the Internet.">
-<hr>
-<p><big-red>You are already logged in and have access to the Internet.</big-red></p>
-<hr>
-<p><italic-black>You can use your Browser, Email and other network Apps as you normally would.</italic-black></p>
 
-<hr>
-<copy-right>Copyright &copy; The Nodogsplash Contributors 2004-2019.<br>This software is released under the GNU GPL license.</copy-right>
+<div class="container">
 
-</div></div>
+<!-- 页面标题 -->
+<h1>$gatewayname 热点网关</h1>
+
+<!-- 页面主图片 -->
+<img src="/images/splash.jpg" alt="">
+
+<!-- 
+状态页说明：
+	如果客户端已认证，则会显示状态页。
+	这通常发生在客户端用户在 CPD 浏览器中
+	点击“返回”后已成功认证。
+
+	状态页可用变量与 Splash 页面一致：
+	error_msg: $error_msg
+	gatewayname: $gatewayname
+	tok: $tok
+	redir: $redir
+	authaction: $authaction
+	denyaction: $denyaction
+	authtarget: $authtarget
+	clientip: $clientip
+	clientmac: $clientmac
+	clientupload: $clientupload
+	clientdownload: $clientdownload
+	gatewaymac: $gatewaymac
+	nclients: $nclients
+	maxclients: $maxclients
+	uptime: $uptime
+-->
+
+<!-- 登录状态提示 -->
+<div class="status-text"><big-red>您已登录并可访问互联网</big-red></div>
+<div class="status-text"><italic-black>您可以像平常一样使用浏览器、邮箱及其他网络应用。</italic-black></div>
+
+<!-- 版权信息 -->
+<div class="copy-right">
+版权所有 &copy; Nodogsplash 贡献者 2004-2025。<br>
+本软件依据 GNU GPL 许可证发布。
+</div>
+
+</div>
+
 </body>
 </html>
