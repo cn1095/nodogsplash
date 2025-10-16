@@ -597,9 +597,9 @@ iptables_fw_init(void)
 	// packets coming in on gw_interface jump to CHAIN_TO_INTERNET
 	rc |= iptables_do_command("-t filter -I FORWARD -i %s -s %s -j " CHAIN_TO_INTERNET, gw_interface, gw_iprange);
 	// CHAIN_TO_INTERNET packets marked BLOCKED DROP
-	rc |= iptables_do_command("-t filter -I " CHAIN_TO_INTERNET " -m mark --mark 0x%x%s -j DROP", FW_MARK_BLOCKED, markmask);
+	rc |= iptables_do_command("-t filter -A " CHAIN_TO_INTERNET " -m mark --mark 0x%x%s -j DROP", FW_MARK_BLOCKED, markmask);
 	// CHAIN_TO_INTERNET, invalid packets DROP
-	rc |= iptables_do_command("-t filter -I " CHAIN_TO_INTERNET " -m conntrack --ctstate INVALID -j DROP");
+	rc |= iptables_do_command("-t filter -A " CHAIN_TO_INTERNET " -m conntrack --ctstate INVALID -j DROP");
 	// CHAIN_TO_INTERNET, deal with MSS
 	if (set_mss) {
 		/* XXX this mangles, so 'should' be done in the mangle POSTROUTING chain.
